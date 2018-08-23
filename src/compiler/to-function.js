@@ -57,8 +57,10 @@ export function createCompileToFunctionFn (compile: Function): Function {
     }
 
     // compile
-    // 将模板字符串template转换为渲染函数字符串
-    // 这里的compile函数就是在createCompiler函数中生成的函数compile
+    /**
+     * 将模板字符串template转换为渲染函数字符串
+     * 这里的compile函数就是在createCompiler函数中生成的函数compile
+     */
     const compiled = compile(template, options)
 
     // check compilation errors/tips

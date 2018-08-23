@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2845cce-1777-410b-8842-8e09e2f0221d" name="Default" comment="" />
+    <list default="true" id="b2845cce-1777-410b-8842-8e09e2f0221d" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/compiler/create-compiler.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/create-compiler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/compiler/to-function.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/compiler/to-function.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -13,14 +18,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6243812">
+    <splitter split-orientation="horizontal" split-proportion="0.47586635">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="to-function.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="to-function.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/compiler/to-function.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="419">
-                  <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
+                <state relative-caret-position="669">
+                  <caret line="63" column="46" selection-start-line="63" selection-start-column="39" selection-end-line="63" selection-end-column="46" />
                   <folding>
                     <element signature="e#785#1368#0" />
                   </folding>
@@ -31,8 +36,8 @@
           <file leaf-file-name="options.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/platforms/web/compiler/options.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="875">
-                  <caret line="65" column="32" lean-forward="true" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
+                <state relative-caret-position="287">
+                  <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                     <element signature="e#13#106#0" expanded="true" />
@@ -41,26 +46,14 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/README.md">
-              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-                <state split_layout="SPLIT">
-                  <first_editor>
-                    <caret column="24" selection-start-column="24" selection-end-column="24" />
-                  </first_editor>
-                  <second_editor />
-                </state>
-              </provider>
-            </entry>
-          </file>
         </leaf>
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="entry-runtime-with-compiler.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="entry-runtime-with-compiler.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/platforms/web/entry-runtime-with-compiler.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="425">
+                <state relative-caret-position="375">
                   <caret line="64" column="72" lean-forward="true" selection-start-line="64" selection-start-column="72" selection-end-line="64" selection-end-column="72" />
                 </state>
               </provider>
@@ -87,11 +80,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="create-compiler.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="create-compiler.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/compiler/create-compiler.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="298">
-                  <caret line="14" column="21" lean-forward="true" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+                <state relative-caret-position="225">
+                  <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
                 </state>
               </provider>
             </entry>
@@ -108,7 +101,7 @@
       <find>addDep</find>
       <find>update</find>
       <find>mountComponent</find>
-      <find />
+      <find>new Watcher</find>
       <find>initComputed</find>
       <find>defineComputed</find>
       <find>createComputedGetter</find>
@@ -130,13 +123,16 @@
       <find>mount</find>
       <find>CompiledFunctionResult</find>
       <find>cache</find>
-      <find>key</find>
       <find>createCompiler</find>
+      <find>key</find>
     </findStrings>
     <dirStrings>
       <dir>E:\yjj\learn\vue-source-code\src</dir>
       <dir>E:\yjj\learn\vue-source-code\src\platforms\web\compiler</dir>
     </dirStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/core/instance/state.js" root0="FORCE_HIGHLIGHTING" />
@@ -150,9 +146,11 @@
         <option value="$PROJECT_DIR$/src/core/observer/index.js" />
         <option value="$PROJECT_DIR$/src/core/instance/lifecycle.js" />
         <option value="$PROJECT_DIR$/src/core/observer/watcher.js" />
-        <option value="$PROJECT_DIR$/src/compiler/to-function.js" />
         <option value="$PROJECT_DIR$/src/platforms/web/compiler/options.js" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/compiler/to-function.js" />
+        <option value="$PROJECT_DIR$/src/compiler/create-compiler.js" />
       </list>
     </option>
   </component>
@@ -173,12 +171,13 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="794" />
     <option name="y" value="153" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -263,7 +262,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../med/med-patient-trans" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.prettier" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -314,12 +313,12 @@
       <workItem from="1534903621595" duration="1427000" />
       <workItem from="1534906475791" duration="188000" />
       <workItem from="1534908434651" duration="8856000" />
-      <workItem from="1534990073469" duration="8006000" />
+      <workItem from="1534990073469" duration="10239000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="131889000" />
+    <option name="totallyTimeSpent" value="134122000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -330,7 +329,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32851636" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32851636" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -357,20 +356,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/core/global-api/extend.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/global-api/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="49" column="4" lean-forward="true" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/platforms/web/runtime/directives/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -641,13 +626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/compiler/create-compiler.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="14" column="21" lean-forward="true" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/instance/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -664,16 +642,6 @@
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
           <folding>
             <element signature="e#13#52#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/compiler/to-function.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
-          <folding>
-            <element signature="e#785#1368#0" />
           </folding>
         </state>
       </provider>
@@ -742,19 +710,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/platforms/web/entry-runtime-with-compiler.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
+        <state relative-caret-position="375">
           <caret line="64" column="72" lean-forward="true" selection-start-line="64" selection-start-column="72" selection-end-line="64" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/platforms/web/compiler/options.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="875">
-          <caret line="65" column="32" lean-forward="true" selection-start-line="65" selection-start-column="32" selection-end-line="65" selection-end-column="32" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#13#106#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -762,9 +719,47 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor>
-            <caret column="24" selection-start-column="24" selection-end-column="24" />
+            <caret column="20" selection-start-column="20" selection-end-column="20" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.eslintignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="45" lean-forward="true" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/platforms/web/compiler/options.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="20" column="5" lean-forward="true" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#13#106#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compiler/to-function.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="63" column="46" selection-start-line="63" selection-start-column="39" selection-end-line="63" selection-end-column="46" />
+          <folding>
+            <element signature="e#785#1368#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/compiler/create-compiler.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
         </state>
       </provider>
     </entry>
