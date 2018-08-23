@@ -6,6 +6,12 @@ import { createCompileToFunctionFn } from './to-function'
 
 export function createCompilerCreator (baseCompile: Function): Function {
   return function createCompiler (baseOptions: CompilerOptions) {
+    /**
+     * compile函数主要有三个作用：
+     * 1、生成最终编译器选项 finalOptions
+     * 2、对错误的收集
+     * 3、调用 baseCompile 编译模板
+     */
     function compile (
       template: string,
       options?: CompilerOptions
@@ -56,8 +62,24 @@ export function createCompilerCreator (baseCompile: Function): Function {
           }
         }
       }
-
+      /**
+       * 这里将将模板字符串template转换为渲染函数字符串，
+       * 其中的baseCompile是在src/compiler/index.js中调用createCompilerCreator传入的参数
+       */
       const compiled = baseCompile(template, finalOptions)
+      /**
+       * compiled 是 baseCompile 对模板的编译结果，
+       * 该结果中包含了模板编译后的抽象语法树(AST)，
+       * 可以通过 compiled.ast 访问该语法树。
+       */
+      /**
+       * 这段代码的作用是用来通过抽象语法树来检查模板中是否存在错误表达式的，
+       * 通过 detectErrors 函数实现，
+       * 将 compiled.ast 作为参数传递给 detectErrors 函数，
+       * 该函数最终返回一个数组，
+       * 该数组中包含了所有错误的收集，
+       * 最终通过这句代码将错误添加到 errors 数组中。
+       */
       if (process.env.NODE_ENV !== 'production') {
         errors.push.apply(errors, detectErrors(compiled.ast))
       }

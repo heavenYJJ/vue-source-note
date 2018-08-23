@@ -106,6 +106,7 @@ export function parse (
     }
   }
 
+  // 做词法分析
   parseHTML(template, {
     warn,
     expectHTML: options.expectHTML,

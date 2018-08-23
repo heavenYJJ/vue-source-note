@@ -56,16 +56,19 @@ function decodeAttr (value, shouldDecodeNewlines) {
 }
 
 export function parseHTML (html, options) {
+  // 定义一些常量和变量
   const stack = []
   const expectHTML = options.expectHTML
   const isUnaryTag = options.isUnaryTag || no
   const canBeLeftOpenTag = options.canBeLeftOpenTag || no
   let index = 0
   let last, lastTag
+  // 开启一个 while 循环，循环结束的条件是 html 为空，即 html 被 parse 完毕
   while (html) {
     last = html
     // Make sure we're not in a plaintext content element like script/style
     if (!lastTag || !isPlainTextElement(lastTag)) {
+      // 确保即将 parse 的内容不是在纯文本标签里 (script,style,textarea)
       let textEnd = html.indexOf('<')
       if (textEnd === 0) {
         // Comment:
@@ -146,6 +149,7 @@ export function parseHTML (html, options) {
         options.chars(text)
       }
     } else {
+      // 即将 parse 的内容是在纯文本标签里 (script,style,textarea)
       let endTagLength = 0
       const stackedTag = lastTag.toLowerCase()
       const reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
@@ -168,7 +172,7 @@ export function parseHTML (html, options) {
       html = rest
       parseEndTag(stackedTag, index - endTagLength, index)
     }
-
+    // 将整个字符串作为文本对待
     if (html === last) {
       options.chars && options.chars(html)
       if (process.env.NODE_ENV !== 'production' && !stack.length && options.warn) {
