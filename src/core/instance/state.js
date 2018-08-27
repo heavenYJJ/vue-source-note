@@ -46,6 +46,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 }
 
 export function initState (vm: Component) {
+  // 这个数组将用来存储所有该组件实例的watcher对象
   vm._watchers = []
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)

@@ -16,8 +16,10 @@ export function initMixin (Vue: Class<Component>) {
   Vue.prototype._init = function (options?: Object) {
     const vm: Component = this
     // a uid
+    // 给vue实例上面添加一个属性
     vm._uid = uid++
 
+    // 组件初始化性能追踪  ---start
     let startTag, endTag
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
@@ -27,8 +29,9 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    // 标明这个对象是Vue实例
     vm._isVue = true
-    // merge options
+    // options._isComponent是Vue创建组件的时候才有的属性，所以初始化的时候这里的代码走的是else的代码
     if (options && options._isComponent) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
@@ -36,17 +39,38 @@ export function initMixin (Vue: Class<Component>) {
       initInternalComponent(vm, options)
     } else {
       vm.$options = mergeOptions(
+        /**
+         * 在不是使用Vue.extend的情况下：
+         * vm.constructor == vm.__proto__.constructor == Vue构造函数。
+         * resolveConstructorOptions(vm.constructor) ==
+         * Vue.options =={
+              components: {
+                KeepAlive
+                Transition,
+                TransitionGroup
+              },
+              directives:{
+                model,
+                show
+              },
+              filters: Object.create(null),
+              _base: Vue
+            }
+         */
         resolveConstructorOptions(vm.constructor),
         options || {},
         vm
       )
     }
+
+    // 给vue实例上加一个_renderProxy属性，属性值为实例本身。
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
       initProxy(vm)
     } else {
       vm._renderProxy = vm
     }
+
     // expose real self
     vm._self = vm
     initLifecycle(vm)
@@ -54,10 +78,12 @@ export function initMixin (Vue: Class<Component>) {
     initRender(vm)
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
+    // 这里才是真正的初始化data、props、methods、computed、watch的地方
     initState(vm)
     initProvide(vm) // resolve provide after data/props
     callHook(vm, 'created')
 
+    // 组件初始化性能追踪  ---end
     /* istanbul ignore if */
     if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
       vm._name = formatComponentName(vm, false)
@@ -90,9 +116,13 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   }
 }
 
+// Ctor == Vue
 export function resolveConstructorOptions (Ctor: Class<Component>) {
+  // Ctor.options == Vue.options
   let options = Ctor.options
+  // 这一坨if语句的水有点深，先忽略。
   if (Ctor.super) {
+    // Ctor.super是只有子类才有的东西==构造函数的父类
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
     if (superOptions !== cachedSuperOptions) {
