@@ -112,6 +112,7 @@ function initProps (vm: Component, propsOptions: Object) {
 
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 如果vm._data是一个函数，那么其求值后赋值给data变量。经过处理后data就变成了一个对象。
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -144,7 +145,9 @@ function initData (vm: Component) {
         `Use prop default value instead.`,
         vm
       )
+      // isReserved方法判断data的变量首字母是否为 '$' 或者 '_' 开头
     } else if (!isReserved(key)) {
+      // vm.key求值 == vm._data.key求值
       proxy(vm, `_data`, key)
     }
   }
@@ -153,9 +156,15 @@ function initData (vm: Component) {
 }
 
 export function getData (data: Function, vm: Component): any {
+  /**
+   * 在这里调用 pushTarget 和 popTarget 的作用为：
+   * 为了防止使用 props 数据初始化 data 数据时收集冗余的依赖。
+   * 有点没搞懂是什么意思？？？？
+   */
   // #7573 disable dep collection when invoking data getters
   pushTarget()
   try {
+    // 执行data函数，将data函数里面的this指向vm实例，并且将vm实例当作参数传入
     return data.call(vm, vm)
   } catch (e) {
     handleError(e, vm, `data()`)
