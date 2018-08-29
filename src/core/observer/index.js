@@ -41,6 +41,7 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
+    // 这里的dep实例对象属性和defineReactive中的dep作用是不一样的，是给Vue.set()或者$set()使用时，对象添加、删除属性时有能力触发依赖，导致页面渲染
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
@@ -117,6 +118,11 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     shouldObserve &&
     !isServerRendering() &&
     (Array.isArray(value) || isPlainObject(value)) &&
+    /**
+     * Object.isExtensible判断一个对象是否为可扩展的，
+     * 一个普通的对象默认是可扩展的，
+     * 使用Object.preventExtensions()、Object.freeze() 以及 Object.seal() 可以将对象变为不可扩展
+     */
     Object.isExtensible(value) &&
     !value._isVue
   ) {
@@ -152,7 +158,13 @@ export function defineReactive (
     val = obj[key]
   }
 
+  /**
+   * observe(val)，这里要分成两种情况，当val为对象或者数组时，val不是对象或者数组时。
+   * val == 对象或者数组：childOb实际上就是返回val的__ob__属性，即 val.__ob__。
+   * val != 对象或者数组：childOb== undefined。
+   */
   let childOb = !shallow && observe(val)
+
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
@@ -161,8 +173,17 @@ export function defineReactive (
       if (Dep.target) {
         dep.depend()
         if (childOb) {
+          /**
+           * childOb.dep == val.__ob__.dep，
+           * 可以这样理解：需要监听的所有的对象或者数组都有__ob__属性，
+           * 并且都在这里使用过val.__ob__.dep.depend()收集过依赖（触发依赖可以导致页面渲染）。
+           * 所以我们使用Vue.set()或者$set()给对象添加、删除属性的时候和操作数组的时候会触发这这里收集过的依赖。
+           * Vue.set()或者$set()触发依赖是使用：obj.__ob__.dep.notify()；（PS：这里的obj为Vue.set传入的对象）
+           * 数组触发依赖是使用：Arr.__ob__.dep.notify()
+           */
           childOb.dep.depend()
           if (Array.isArray(value)) {
+            // 这里的逻辑有点说不清楚，具体参考 http://hcysun.me/vue-design/art/7vue-reactive.html#数组的特殊性
             dependArray(value)
           }
         }

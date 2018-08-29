@@ -39,6 +39,7 @@ methodsToPatch.forEach(function (method) {
     }
     if (inserted) ob.observeArray(inserted)
     // notify change
+    // 这里触发的依赖是在defineReactive函数get的if (childOb)判断语句中收集的。
     ob.dep.notify()
     return result
   })
