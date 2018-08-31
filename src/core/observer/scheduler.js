@@ -131,6 +131,16 @@ export function queueWatcher (watcher: Watcher) {
   const id = watcher.id
   if (has[id] == null) {
     has[id] = true
+    /**
+     * flushing会在突变完成后执行更新的时候会置为true，
+     * 如果当前在执行更新，那么就不直接加入任务队列。
+     * 举个例子：
+     * 队列执行更新时经常会执行渲染函数观察者的更新，
+     * 渲染函数中很可能有计算属性的存在，
+     * 由于计算属性在实现方式上与普通响应式属性有所不同，
+     * 所以当触发计算属性的 get 拦截器函数时会有观察者入队的行为，
+     * 这个时候我们需要特殊处理，
+     */
     if (!flushing) {
       queue.push(watcher)
     } else {
@@ -144,6 +154,15 @@ export function queueWatcher (watcher: Watcher) {
     }
     // queue the flush
     if (!waiting) {
+      /**
+       * flushSchedulerQueue：将队列中的观察者统一执行更新。
+       * nextTick：可以理解成setTimeout(fn,0)。
+       * 这坨if语句的意思就很清楚了，
+       * 将flushSchedulerQueue放入js的事件队列，
+       * 当前js的执行栈执行完了之后，
+       * 就会将任务队列的flushSchedulerQueue放入执行栈执行（参考js事件循环），
+       * 所以不管调用了多少次queueWatcher，这里都只会执行一次
+       */
       waiting = true
       nextTick(flushSchedulerQueue)
     }

@@ -51,21 +51,35 @@ export default class Watcher {
   ) {
     this.vm = vm
     if (isRenderWatcher) {
+      /**
+       * 如果isRenderWatcher为true，
+       * 说明当前的watcher实例为，当前组件的渲染函数观察者(renderWatcher)，
+       * 将当前组件的renderWatcher赋值给当前组件实例的_watcher属性。
+       * 这里的vm._watcher是我们在initLifecycle函数中定义的
+       */
       vm._watcher = this
     }
+    // 将当前组件的watcher实例放入在initState()函数定义的vm._watchers数组中
     vm._watchers.push(this)
     // options
     if (options) {
+      // 用来告诉当前观察者实例对象是否是深度观测
       this.deep = !!options.deep
+      // 用来标识当前观察者实例对象是 开发者定义的 还是 内部定义的
       this.user = !!options.user
+      // 用来标识当前观察者实例对象是否是计算属性的观察者
       this.computed = !!options.computed
+      // 用来告诉观察者当数据变化时是否同步求值并执行回调
       this.sync = !!options.sync
+      // 可以理解为 Watcher 实例的钩子，当数据变化之后，触发更新之前，调用在创建渲染函数的观察者实例对象时传递的 before 选项。
       this.before = options.before
     } else {
       this.deep = this.user = this.computed = this.sync = false
     }
     this.cb = cb
+    // 观察者实例对象的唯一标识
     this.id = ++uid // uid for batching
+    // 标识着该观察者实例对象是否是激活状态
     this.active = true
     this.dirty = this.computed // for computed watchers
     this.deps = []
@@ -79,6 +93,10 @@ export default class Watcher {
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      /**
+       * 传入的要watch的对象可能是 obj1.a 这种形式，
+       * 使用parsePath处理一下，最终返回一个函数
+       */
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = function () {}
@@ -130,10 +148,19 @@ export default class Watcher {
    */
   addDep (dep: Dep) {
     const id = dep.id
+    /**
+     * 将当前的dep实例进行收集，
+     * 在watcher里面收集dep实例的原因是为了实现在dep中不会重复收集watcher依赖，
+     */
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id)
       this.newDeps.push(dep)
       if (!this.depIds.has(id)) {
+        /**
+         * 如果当前的dep实例没有被watcher收集过，
+         * 那么说明dep实例也没有收集过当前的watcher。
+         * 因为dep和watcher之间的依赖收集是双向的，会互相进行依赖收集。
+         */
         dep.addSub(this)
       }
     }
@@ -187,6 +214,7 @@ export default class Watcher {
     } else if (this.sync) {
       this.run()
     } else {
+      // 将当前的watcher实例对象放入队列中，等待所有的突变完成后统一执行更新
       queueWatcher(this)
     }
   }
@@ -202,6 +230,7 @@ export default class Watcher {
   }
 
   getAndInvoke (cb: Function) {
+    // 如果是renderWatcher，这里会重新求值，导致页面渲染
     const value = this.get()
     if (
       value !== this.value ||

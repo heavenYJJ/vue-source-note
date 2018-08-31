@@ -20,6 +20,7 @@ export default class Dep {
   }
 
   addSub (sub: Watcher) {
+    // 将当前的watcher实例收集
     this.subs.push(sub)
   }
 
