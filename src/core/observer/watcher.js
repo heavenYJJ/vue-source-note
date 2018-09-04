@@ -110,6 +110,7 @@ export default class Watcher {
     }
     if (this.computed) {
       this.value = undefined
+      // 给当前面的computedWatcher实例上加一个dep实例属性，用于收集renderWatcher依赖
       this.dep = new Dep()
     } else {
       this.value = this.get()
@@ -135,6 +136,7 @@ export default class Watcher {
       // "touch" every property so they are all tracked as
       // dependencies for deep watching
       if (this.deep) {
+        // 递归地读取被观察属性的所有子属性的值，这样被观察属性的所有子属性都将会收集到观察者
         traverse(value)
       }
       popTarget()

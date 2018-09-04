@@ -63,6 +63,17 @@ export function initState (vm: Component) {
 }
 
 function initProps (vm: Component, propsOptions: Object) {
+  /**
+   * props 代表接收来自外界传递进来的数据，
+   * 这些数据总要存在某个地方，
+   * 使得我们可以在组件内使用，
+   * 而 vm.$options.propsData 就是用来存储来自外界的组件数据的。
+   * 例如：<some-comp prop1="1" prop2="2" />
+   * propsData = {
+        prop1: '1',
+        prop2: '2'
+     }
+   */
   const propsData = vm.$options.propsData || {}
   const props = vm._props = {}
   // cache prop keys so that future props updates can iterate using Array
@@ -71,10 +82,19 @@ function initProps (vm: Component, propsOptions: Object) {
   const isRoot = !vm.$parent
   // root instance props should be converted
   if (!isRoot) {
+    /**
+     * 在定义 props 数据时，
+     * 不将 prop 值转换为响应式数据，
+     * 这里要注意的是：由于 props 本身是通过 defineReactive 定义的，
+     * 所以 props 本身是响应式的，但没有对值进行深度定义。
+     * 这样做的目的是如果props的值为对象或者数组时，
+     * 避免直接修改prop对象的属性值时导致页面重新渲染
+     */
     toggleObserving(false)
   }
   for (const key in propsOptions) {
     keys.push(key)
+    // 用来校验名字(key)给定的 prop 数据是否符合预期的类型，并返回相应 prop 的值(或默认值)。
     const value = validateProp(key, propsOptions, propsData, vm)
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {

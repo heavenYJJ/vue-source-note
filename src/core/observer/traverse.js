@@ -23,6 +23,7 @@ function _traverse (val: any, seen: SimpleSet) {
     return
   }
   if (val.__ob__) {
+    // 这坨if语句将读过的所有的对象或者数组存一下dep的id，避免循环引用出现死循环的情况
     const depId = val.__ob__.dep.id
     if (seen.has(depId)) {
       return
@@ -30,6 +31,7 @@ function _traverse (val: any, seen: SimpleSet) {
     seen.add(depId)
   }
   if (isA) {
+    // 如果是对象或者数组，递归求值
     i = val.length
     while (i--) _traverse(val[i], seen)
   } else {

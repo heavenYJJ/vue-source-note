@@ -192,6 +192,8 @@ export function mountComponent (
     }
   } else {
     updateComponent = () => {
+      // vm._render()它用来把实例渲染成一个虚拟 Node
+      // vm._update用它将VNode渲染成真实的DOM
       vm._update(vm._render(), hydrating)
     }
   }
