@@ -25,14 +25,36 @@ const ALWAYS_NORMALIZE = 2
 
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
+// 参考 https://cn.vuejs.org/v2/guide/render-function.html#createElement-参数
 export function createElement (
   context: Component,
+  /**
+   * {String | Object | Function}
+   * 一个 HTML 标签字符串，组件选项对象，或者
+   * 解析上述任何一种的一个 async 异步函数，必要参数。
+   */
   tag: any,
+  /**
+   * {Object}
+   * 一个包含模板相关属性（包含class、style等）的数据对象
+   * 这样，您可以在 template 中使用这些属性。可选参数。
+   * 详情参考官方文档：https://cn.vuejs.org/v2/guide/render-function.html#深入-data-对象
+   */
   data: any,
+  /**
+   * {String | Array}
+   * 子节点 (VNodes)，由 `createElement()` 构建而成，
+   * 或使用字符串来生成“文本节点”。可选参数。
+   */
   children: any,
   normalizationType: any,
   alwaysNormalize: boolean
 ): VNode | Array<VNode> {
+  /**
+   * 这里只是兼容一下如果没有传data，
+   * 将data的值设置为undefined，
+   * 并且传的其他参数依次后移。
+   */
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -96,6 +118,10 @@ export function _createElement (
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
+    /**
+     * 这里才是_createElement调用VNode类生产VNode的地方，
+     * VNode可以看成简化版的 DOM 节点
+     */
     if (config.isReservedTag(tag)) {
       // platform built-in elements
       vnode = new VNode(

@@ -82,6 +82,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
+  // 上面这坨代码的意思是将template编译成render函数，然后调用缓存下来的mount生成VNode，然后渲染到真实的DOM上
   return mount.call(this, el, hydrating)
 }
 

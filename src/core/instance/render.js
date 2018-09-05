@@ -83,6 +83,17 @@ export function renderMixin (Vue: Class<Component>) {
     // render self
     let vnode
     try {
+      /**
+       * _render方法的核心就是执行了render方法，
+       * vm._renderProxy实际上就是vm实例，
+       * vm.$createElement实际上就是createElement方法的包装，
+       * 在上面的initRender方法中定义的vm.$createElement方法。
+       * 举个vue中jsx直接写render函数的例子：
+       * render: function (createElement) {
+            return createElement('h1', 'blogTitle')
+         }
+       * vm.$createElement实际就是这里的传入的 createElement。
+       */
       vnode = render.call(vm._renderProxy, vm.$createElement)
     } catch (e) {
       handleError(e, vm, `render`)
