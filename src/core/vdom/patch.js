@@ -83,6 +83,7 @@ export function createPatchFunction (backend) {
   }
 
   function emptyNodeAt (elm) {
+    // nodeOps.tagName()方法返回的是 node.tagName
     return new VNode(nodeOps.tagName(elm).toLowerCase(), {}, [], undefined, elm)
   }
 
@@ -696,6 +697,7 @@ export function createPatchFunction (backend) {
       isInitialPatch = true
       createElm(vnode, insertedVnodeQueue)
     } else {
+      // isRealElement为true表示当前的oldVnode是真实的DOM元素
       const isRealElement = isDef(oldVnode.nodeType)
       if (!isRealElement && sameVnode(oldVnode, vnode)) {
         // patch existing root node
@@ -706,10 +708,12 @@ export function createPatchFunction (backend) {
           // check if this is server-rendered content and if we can perform
           // a successful hydration.
           if (oldVnode.nodeType === 1 && oldVnode.hasAttribute(SSR_ATTR)) {
+            // 服务端渲染的情况
             oldVnode.removeAttribute(SSR_ATTR)
             hydrating = true
           }
           if (isTrue(hydrating)) {
+            // 是week的情况
             if (hydrate(oldVnode, vnode, insertedVnodeQueue)) {
               invokeInsertHook(vnode, insertedVnodeQueue, true)
               return oldVnode
@@ -725,6 +729,7 @@ export function createPatchFunction (backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          // 如果oldVnode是真实的DOM节点，使用当前DOM节点的tagName创建一个VNode赋值给oldVnode
           oldVnode = emptyNodeAt(oldVnode)
         }
 
