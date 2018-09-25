@@ -124,12 +124,14 @@ export function _createElement (
      */
     if (config.isReservedTag(tag)) {
       // platform built-in elements
+      // 如果当前的标签是普通标签，不是自定义标签
       vnode = new VNode(
         config.parsePlatformTagName(tag), data, children,
         undefined, undefined, context
       )
     } else if (isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // component
+      // 在components中自定义的组件
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
       // unknown or unlisted namespaced elements

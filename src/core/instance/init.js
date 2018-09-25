@@ -100,7 +100,9 @@ export function initMixin (Vue: Class<Component>) {
 export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
+  // 当前vnode组件标签所生成的vnode，也就是占位符vnode，例如<App></App>标签生成的vnode
   const parentVnode = options._parentVnode
+  // 父组件所处的vue实例中
   opts.parent = options.parent
   opts._parentVnode = parentVnode
 

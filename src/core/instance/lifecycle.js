@@ -63,14 +63,18 @@ export function lifecycleMixin (Vue: Class<Component>) {
   Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
+    // 上一个VNode
     const prevVnode = vm._vnode
+    // 上一个vue实例
     const prevActiveInstance = activeInstance
     activeInstance = vm
+    // 给vue实例添加_vnode属性
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
     if (!prevVnode) {
       // initial render
+      // 第一次的时候，这里的vm.$el其实就是真实的DOM节点
       vm.$el = vm.__patch__(vm.$el, vnode, hydrating, false /* removeOnly */)
     } else {
       // updates
@@ -193,8 +197,13 @@ export function mountComponent (
     }
   } else {
     updateComponent = () => {
-      // vm._render()它用来把实例渲染成一个虚拟 Node
-      // vm._update用它将VNode渲染成真实的DOM
+      /**
+       * vm._render()它用来把实例渲染成一个虚拟 Node。
+       * 虚拟Node分为两种：普通标签生成的Node，自定义组件生成的Node。
+       * 普通标签生成的Node：没什么大的区别；
+       * 自定义组件生成的Node：标签名称为：vue-component-4-App 形式， 并且有componentOptions对象属性。
+       * vm._update用它将VNode渲染成真实的DOM
+       */
       vm._update(vm._render(), hydrating)
     }
   }

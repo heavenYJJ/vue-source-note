@@ -164,6 +164,12 @@ export function createPatchFunction (backend) {
         }
       }
 
+      /**
+       * nodeOps.createElementNS实际上就是调用document.createElementNS，
+       * document.createElementNS 是创建一个具有指定的命名空间URI和限定名称的元素，
+       * 和createElement刚好做对比，
+       * reateElement是创建一个元素而不指定命名空间URI。
+       */
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
@@ -189,6 +195,7 @@ export function createPatchFunction (backend) {
           insert(parentElm, vnode.elm, refElm)
         }
       } else {
+        // 在createChildren里面遍历children，递归调用createElm，创建整个DOM节点树。
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
           invokeCreateHooks(vnode, insertedVnodeQueue)
@@ -212,6 +219,13 @@ export function createPatchFunction (backend) {
     let i = vnode.data
     if (isDef(i)) {
       const isReactivated = isDef(vnode.componentInstance) && i.keepAlive
+      /**
+       * 首先判断vnode.data.hook是否存在，
+       * 如果存在判断vnode.data.hook.init是否存在，然后执行该方法。
+       * 这里的init方法是在 core/vdom/create-comonent.js 的componentVNodeHooks 对象中定义的。
+       * 调用init方法后会给vnode添加componentInstance属性，
+       * 该属性的值为该vnode对应的组件实例
+       */
       if (isDef(i = i.hook) && isDef(i = i.init)) {
         i(vnode, false /* hydrating */)
       }
@@ -734,9 +748,15 @@ export function createPatchFunction (backend) {
         }
 
         // replacing existing element
+        // 经过上面处理后oldElm已经被转换为一个VNode
         const oldElm = oldVnode.elm
+        // 返回oldVnode真实DOM节点的parentNode
         const parentElm = nodeOps.parentNode(oldElm)
 
+        /**
+         * 在这里面会递归生成真实DOM，
+         * 然后从内到外将每一层的DOM插入其parentNode中。
+         */
         // create new node
         createElm(
           vnode,

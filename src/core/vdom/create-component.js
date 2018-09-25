@@ -44,6 +44,7 @@ const componentVNodeHooks = {
       const mountedNode: any = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
     } else {
+      // 创建当前组件vnode对应的vue实例，并且赋值给componentInstance属性
       const child = vnode.componentInstance = createComponentInstanceForVnode(
         vnode,
         activeInstance
@@ -109,10 +110,29 @@ export function createComponent (
     return
   }
 
+  /**
+   * 在global-api/index.js文件中定义了 Vue.options._base = Vue
+   * 然后通过mergeOptions 后，
+   * 实际得到这里的 baseCtor  === Vue 构造函数
+   */
   const baseCtor = context.$options._base
 
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
+    /**
+     * 这里实际上就是调用的 Vue.extend({options})，
+     * 使用基础 Vue 构造器，创建一个“子类”（也是一个构造函数）。
+     * 参数是一个包含组件选项的对象。
+     * 例如：
+     * {
+         template: '<p>{{firstName}}</p>',
+         data: function () {
+            return {
+              firstName: 'Walter',
+            }
+          }
+        }
+     */
     Ctor = baseCtor.extend(Ctor)
   }
 
@@ -125,6 +145,7 @@ export function createComponent (
     return
   }
 
+  // 经过上面处理Ctor（子组件）已经变成了一个构造函数，这里是处理异步组件的地方
   // async component
   let asyncFactory
   if (isUndef(Ctor.cid)) {
@@ -187,6 +208,7 @@ export function createComponent (
 
   // return a placeholder vnode
   const name = Ctor.options.name || tag
+  // 这里也是返回了一个VNode，和普通标签创建的VNode的区别是，这里传入了componentOptions 对象，就是倒数第二个参数
   const vnode = new VNode(
     `vue-component-${Ctor.cid}${name ? `-${name}` : ''}`,
     data, undefined, undefined, undefined, context,
@@ -220,6 +242,12 @@ export function createComponentInstanceForVnode (
     options.render = inlineTemplate.render
     options.staticRenderFns = inlineTemplate.staticRenderFns
   }
+  /**
+   * vnode.componentOptions.Ctor 就是 调用上面的createCompoent方法时所生成的vnode。
+   * 这种vnode和普通的vnode的区别在于包含componentOptions对象属性，
+   * vnode.componentOptions.Ctor 的值为继承Vue的构造函数，
+   * 这里其实就是调用继承Vue构造函数生成的vue实例
+   */
   return new vnode.componentOptions.Ctor(options)
 }
 
