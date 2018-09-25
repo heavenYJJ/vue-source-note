@@ -119,16 +119,17 @@ export function _createElement (
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
     /**
-     * 这里才是_createElement调用VNode类生产VNode的地方，
+     * 这里才是_createElement调用VNode类生成VNode的地方，
      * VNode可以看成简化版的 DOM 节点
      */
     if (config.isReservedTag(tag)) {
       // platform built-in elements
-      // 如果当前的标签是普通标签，不是自定义标签
+      // 如果是普通的标签tag，直接生成VNode
       vnode = new VNode(
         config.parsePlatformTagName(tag), data, children,
         undefined, undefined, context
       )
+      // 如果在vm.$options.components对象中定义过这个tag标签，说明这里是一个组件
     } else if (isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // component
       // 在components中自定义的组件
@@ -143,6 +144,7 @@ export function _createElement (
       )
     }
   } else {
+    // 当做组件处理
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children)
   }
