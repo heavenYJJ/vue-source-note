@@ -750,7 +750,7 @@ export function createPatchFunction (backend) {
         // replacing existing element
         // 经过上面处理后oldElm已经被转换为一个VNode
         const oldElm = oldVnode.elm
-        // 返回oldVnode真实DOM节点的parentNode
+        // 返回oldVnode真实DOM节点的parentNode，如果是初始化的时候走了的parentElm是body
         const parentElm = nodeOps.parentNode(oldElm)
 
         /**

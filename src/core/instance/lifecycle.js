@@ -68,7 +68,14 @@ export function lifecycleMixin (Vue: Class<Component>) {
     // 上一个vue实例
     const prevActiveInstance = activeInstance
     activeInstance = vm
-    // 给vue实例添加_vnode属性
+    /**
+     * 给vue实例添加_vnode属性，
+     * 这个_vnode是子组件render函数生成的渲染vnode，
+     * $vnode是指向父组件的占位符vnode，
+     * 所以$vndoe的关系是_vnode的父级。
+     * 例：_vnode是 <div>子组件里面的内容</div>生成的vnode
+     *    $vnode是  <App></App>生成的vnode
+     */
     vm._vnode = vnode
     // Vue.prototype.__patch__ is injected in entry points
     // based on the rendering backend used.
