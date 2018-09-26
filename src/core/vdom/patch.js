@@ -234,6 +234,16 @@ export function createPatchFunction (backend) {
       // component also has set the placeholder vnode's elm.
       // in that case we can just return the element and be done.
       if (isDef(vnode.componentInstance)) {
+        /**
+         * 执行了上面的hook的init方法后，
+         * 实际上就已经生成了子节点，
+         * 并且执行了$mount方法。
+         * 但是子组件的$mount并没有将子组件生成的DOM节点，
+         * 挂载到父组件上面的占位符对应的DOM节点上面去。
+         * 执行了$mount方法中最终的的patch方法，
+         * 其实是返回了vnode.elm（子组件生成的vnode对应的真实DOM节点）并且赋值给vm.$el。
+         * 真正执行挂载DOM节点到父组件占位符节点的是在下面这两句代码中。
+         */
         initComponent(vnode, insertedVnodeQueue)
         insert(parentElm, vnode.elm, refElm)
         if (isTrue(isReactivated)) {
@@ -249,6 +259,10 @@ export function createPatchFunction (backend) {
       insertedVnodeQueue.push.apply(insertedVnodeQueue, vnode.data.pendingInsert)
       vnode.data.pendingInsert = null
     }
+    /**
+     * vnode.componentInstance 实际就是当前组件的实例。
+     * vnode.componentInstance.$el 就是将调用patch方法后生成的子组件的DOM节点赋值给子组件vnode的elm属性。（刚好证明了vnode的elm属性是对应的当前虚拟节点对应的真实dom节点）
+     */
     vnode.elm = vnode.componentInstance.$el
     if (isPatchable(vnode)) {
       invokeCreateHooks(vnode, insertedVnodeQueue)
