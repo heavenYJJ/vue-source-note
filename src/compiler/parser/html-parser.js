@@ -13,6 +13,14 @@ import { makeMap, no } from 'shared/util'
 import { isNonPhrasingTag } from 'web/compiler/util'
 
 // Regular Expressions for parsing tags and attributes
+/**
+ *  /^\s*  ([^\s"'<>\/=]+)  (  ?:\s*(=)\s*  (?:  "([^"]*)"+  |  '([^']*)'+  |([^\s"'=<>`]+)  ))?/
+ *  ([^\s"'<>\/=]+)  表示属性名
+ *  ?:\s*(=)\s*      表示等号
+ *  "([^"]*)"+       表示 "some-class" 类型属性值
+ *  '([^']*)'+       表示 'some-class' 类型属性值
+ *  |([^\s"'=<>`]+)  表示 some-class 类型属性值
+ */
 const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/
 // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
 // but for Vue templates we can enforce a simple charset

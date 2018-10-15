@@ -61,6 +61,7 @@ export function createASTElement (
 /**
  * Convert HTML string to AST.
  */
+// 在parseHTML函数的词法分析的基础上做句法分析，从而生成一颗AST（实际上就是个对象）
 export function parse (
   template: string,
   options: CompilerOptions
