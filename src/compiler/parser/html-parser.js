@@ -40,9 +40,12 @@ let IS_REGEX_CAPTURING_BROKEN = false
 })
 
 // Special Elements (can contain anything)
+// 用来检测给定的标签名字是不是纯文本标签（包括：script、style、textarea）
 export const isPlainTextElement = makeMap('script,style,textarea', true)
 const reCache = {}
 
+
+// 下面decodingMap、encodedAttr、encodedAttrWithNewLines三个变量是用来完成对 html 实体进行解码的。
 const decodingMap = {
   '&lt;': '<',
   '&gt;': '>',
@@ -55,21 +58,38 @@ const encodedAttr = /&(?:lt|gt|quot|amp);/g
 const encodedAttrWithNewLines = /&(?:lt|gt|quot|amp|#10|#9);/g
 
 // #5992
+// 检测给的标签中是否包含pre或者textarea
 const isIgnoreNewlineTag = makeMap('pre,textarea', true)
+// 用来检测是否应该忽略元素内容的第一个换行符
 const shouldIgnoreFirstNewline = (tag, html) => tag && isIgnoreNewlineTag(tag) && html[0] === '\n'
 
+// decodeAttr 函数是用来解码 html 实体的
 function decodeAttr (value, shouldDecodeNewlines) {
   const re = shouldDecodeNewlines ? encodedAttrWithNewLines : encodedAttr
   return value.replace(re, match => decodingMap[match])
 }
 
+// html是需要被parse
 export function parseHTML (html, options) {
-  // 定义一些常量和变量
+  /**
+   * 定义一些常量和变量，
+   * 在while循环中处理html字符流的时候每当遇到一个 非一元标签，
+   * 都会将该开始标签push进入这个stack数组当中（入栈），
+   * 可以用于检测html字符串中是否缺少闭合标签。
+   */
   const stack = []
   const expectHTML = options.expectHTML
+  // no为始终返回false的函数
+  // 检测一个标签是否为一元标签
   const isUnaryTag = options.isUnaryTag || no
+  // 检测一个标签是否可以是省略闭合标签的非一元标签
   const canBeLeftOpenTag = options.canBeLeftOpenTag || no
+  // 标识着当前字符流的读入位置
   let index = 0
+  /**
+   * last：剩余存储还未parse的html字符串
+   * lastTag：始终存储着位于stack栈顶的元素
+   */
   let last, lastTag
   // 开启一个 while 循环，循环结束的条件是 html 为空，即 html 被 parse 完毕
   while (html) {
@@ -80,6 +100,7 @@ export function parseHTML (html, options) {
       let textEnd = html.indexOf('<')
       if (textEnd === 0) {
         // Comment:
+        // 如果是注释节点
         if (comment.test(html)) {
           const commentEnd = html.indexOf('-->')
 
@@ -198,6 +219,7 @@ export function parseHTML (html, options) {
     html = html.substring(n)
   }
 
+  // parseStartTag 函数用来 parse 开始标签
   function parseStartTag () {
     const start = html.match(startTagOpen)
     if (start) {
@@ -221,6 +243,7 @@ export function parseHTML (html, options) {
     }
   }
 
+  // handleStartTag 函数用来处理 parseStartTag 的结果
   function handleStartTag (match) {
     const tagName = match.tagName
     const unarySlash = match.unarySlash
@@ -266,6 +289,7 @@ export function parseHTML (html, options) {
     }
   }
 
+  // parseEndTag 函数用来 parse 结束标签
   function parseEndTag (tagName, start, end) {
     let pos, lowerCasedTagName
     if (start == null) start = index
