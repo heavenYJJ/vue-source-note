@@ -98,21 +98,32 @@ export function parseHTML (html, options) {
     if (!lastTag || !isPlainTextElement(lastTag)) {
       // 确保即将 parse 的内容不是在纯文本标签里 (script,style,textarea)
       let textEnd = html.indexOf('<')
+
+      // 如果textEnd === 0 ，说明当前html为<div>111</div>，这种类型。
       if (textEnd === 0) {
         // Comment:
         // 如果是注释节点
         if (comment.test(html)) {
           const commentEnd = html.indexOf('-->')
 
+          // 如果能够匹配到 '-->' 说明是注释节点
           if (commentEnd >= 0) {
             if (options.shouldKeepComment) {
+              // 将字符串首页的 '<--' 和 '-->' 截取掉
               options.comment(html.substring(4, commentEnd))
             }
+            /**
+             * 将已经 parser 的字符串剔除，
+             * 例如有以下html字符串：html = <!-- a comment --!><div></div>，
+             * 执行了该函数后 html = <div></div>
+             */
             advance(commentEnd + 3)
+            // 执行continue跳出此次while循环，进入下个while循环
             continue
           }
         }
 
+        // 有可能是条件注释节点，和上面的注释节点处理情况相同
         // http://en.wikipedia.org/wiki/Conditional_comment#Downlevel-revealed_conditional_comment
         if (conditionalComment.test(html)) {
           const conditionalEnd = html.indexOf(']>')
@@ -123,7 +134,7 @@ export function parseHTML (html, options) {
           }
         }
 
-        // Doctype:
+        // Doctype的情况
         const doctypeMatch = html.match(doctype)
         if (doctypeMatch) {
           advance(doctypeMatch[0].length)
@@ -131,6 +142,7 @@ export function parseHTML (html, options) {
         }
 
         // End tag:
+        // 结束标签
         const endTagMatch = html.match(endTag)
         if (endTagMatch) {
           const curIndex = index
@@ -140,6 +152,7 @@ export function parseHTML (html, options) {
         }
 
         // Start tag:
+        // 开始标签
         const startTagMatch = parseStartTag()
         if (startTagMatch) {
           handleStartTag(startTagMatch)
@@ -223,6 +236,10 @@ export function parseHTML (html, options) {
   function parseStartTag () {
     const start = html.match(startTagOpen)
     if (start) {
+      /**
+       * 举个例子：<div></div>，
+       * match后的start数组为 ['<div', 'div']
+       */
       const match = {
         tagName: start[1],
         attrs: [],
@@ -230,6 +247,12 @@ export function parseHTML (html, options) {
       }
       advance(start[0].length)
       let end, attr
+      /**
+       * 没有匹配到开始标签的结束部分，
+       * 并且匹配到了开始标签中的属性，
+       * 这个时候循环体将被执行，
+       * 直到遇到开始标签的结束部分为止。
+       */
       while (!(end = html.match(startTagClose)) && (attr = html.match(attribute))) {
         advance(attr[0].length)
         match.attrs.push(attr)
