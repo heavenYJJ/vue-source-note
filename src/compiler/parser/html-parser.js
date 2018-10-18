@@ -271,6 +271,7 @@ export function parseHTML (html, options) {
     const tagName = match.tagName
     const unarySlash = match.unarySlash
 
+    // expectHTML 是 parser 选项，是一个布尔值
     if (expectHTML) {
       if (lastTag === 'p' && isNonPhrasingTag(tagName)) {
         parseEndTag(lastTag)
@@ -280,10 +281,13 @@ export function parseHTML (html, options) {
       }
     }
 
+    // unary 是一个布尔值，当它为真时代表着标签是一元标签，否则是二元标签
     const unary = isUnaryTag(tagName) || !!unarySlash
 
     const l = match.attrs.length
     const attrs = new Array(l)
+
+    // 这个 for 循环的作用是：格式化 match.attrs 数组，并将格式化后的数据存储到常量 attrs 中
     for (let i = 0; i < l; i++) {
       const args = match.attrs[i]
       // hackish work around FF bug https://bugzilla.mozilla.org/show_bug.cgi?id=369778
@@ -302,6 +306,7 @@ export function parseHTML (html, options) {
       }
     }
 
+    // 如果开始标签是非一元标签，则将该开始标签的信息入栈，即 push 到 stack 数组中，并将 lastTag 的值设置为该标签名
     if (!unary) {
       stack.push({ tag: tagName, lowerCasedTag: tagName.toLowerCase(), attrs: attrs })
       lastTag = tagName
