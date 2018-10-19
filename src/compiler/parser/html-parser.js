@@ -147,6 +147,13 @@ export function parseHTML (html, options) {
         if (endTagMatch) {
           const curIndex = index
           advance(endTagMatch[0].length)
+          // 在调用 parseEndTag 函数之前已经获得到了结束标签的名字以及结束标签在原始 html 字符串中的起始和结束位置
+          /**
+           * 该函数的作用有以下三点：
+           * 检测是否缺少闭合标签，
+           * 处理 stack 栈中剩余的标签，
+           * 解析 </br> 与 </p> 标签，与浏览器的行为相同
+           */
           parseEndTag(endTagMatch[1], curIndex, index)
           continue
         }
@@ -182,6 +189,7 @@ export function parseHTML (html, options) {
         advance(textEnd)
       }
 
+      // 将整个 html 字符串作为文本处理
       if (textEnd < 0) {
         text = html
         html = ''
@@ -194,7 +202,9 @@ export function parseHTML (html, options) {
       // 即将 parse 的内容是在纯文本标签里 (script,style,textarea)
       let endTagLength = 0
       const stackedTag = lastTag.toLowerCase()
+      // reStackedTag 的作用是用来匹配纯文本标签的内容以及结束标签的。
       const reStackedTag = reCache[stackedTag] || (reCache[stackedTag] = new RegExp('([\\s\\S]*?)(</' + stackedTag + '[^>]*>)', 'i'))
+      // 使用正则 reStackedTag 匹配字符串 html 并将其替换为空字符串
       const rest = html.replace(reStackedTag, function (all, text, endTag) {
         endTagLength = endTag.length
         if (!isPlainTextElement(stackedTag) && stackedTag !== 'noscript') {
@@ -205,13 +215,23 @@ export function parseHTML (html, options) {
         if (shouldIgnoreFirstNewline(stackedTag, text)) {
           text = text.slice(1)
         }
+        // 将纯文本标签的内容全部作为纯文本对待。
         if (options.chars) {
           options.chars(text)
         }
         return ''
       })
+
+      /**
+       * 首先更新 index 的值，
+       * 用 html 原始字符串的值减去 rest 字符串的长度，
+       * 我们知道 rest 常量保存着剩余的字符串，
+       * 所以二者的差就是被替换掉的那部分字符串的字符数
+       */
       index += html.length - rest.length
+      // 将 rest 常量的值赋值给 html，所以如果有剩余的字符串的话，它们将在下一次 while 循环被处理
       html = rest
+      // parseEndTag 函数解析纯文本标签的结束标签
       parseEndTag(stackedTag, index - endTagLength, index)
     }
     // 将整个字符串作为文本对待

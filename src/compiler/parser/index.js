@@ -108,6 +108,14 @@ export function parse (
   }
 
   // 做词法分析
+  /**
+   * 实现方式就是通过读取字符流配合正则一点一点的解析字符串，
+   * 直到整个字符串都被解析完毕为止。
+   * 并且每当遇到一个特定的 token 时都会调用相应的钩子函数，
+   * 同时将有用的参数传递过去。
+   * 比如每当遇到一个开始标签都会调用 options.start 钩子函数，
+   * 并传递给该钩子五个参数
+   */
   parseHTML(template, {
     warn,
     expectHTML: options.expectHTML,
@@ -119,6 +127,12 @@ export function parse (
     start (tag, attrs, unary) {
       // check namespace.
       // inherit parent ns if there is one
+      /**
+       * unary：判断是否为一元数组。
+       * unary===true，表示为一元数组。
+       * 一元数组：<img />类型。
+       * 非一元数组： <div>sss</div>
+       */
       const ns = (currentParent && currentParent.ns) || platformGetTagNamespace(tag)
 
       // handle IE svg bug
